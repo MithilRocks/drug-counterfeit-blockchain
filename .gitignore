@@ -1,3 +1,4 @@
 network/organizations/ordererOrganizations/
 network/organizations/peerOrganizations/
 fabric-samples
+network/system-genesis-block
