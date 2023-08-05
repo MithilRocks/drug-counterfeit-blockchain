@@ -238,7 +238,7 @@ Channel: &ChannelDefaults
 
 Profiles:
 
-  CertificationOrdererGenesis:
+  DrugCounterfeitOrdererGenesis:
     <<: *ChannelDefaults
     Orderer:
       <<: *OrdererDefaults
@@ -247,7 +247,7 @@ Profiles:
       Capabilities:
         <<: *OrdererCapabilities
     Consortiums:
-      CertificationConsortium:
+      DrugCounterfeitConsortium:
         Organizations:
           - *consumer
           - *distributor
@@ -255,8 +255,8 @@ Profiles:
           - *retailer
           - *transporter
 
-  CertificationChannel:
-    Consortium: CertificationConsortium
+  DrugCounterfeitChannel:
+    Consortium: DrugCounterfeitConsortium
     <<: *ChannelDefaults
     Application:
       <<: *ApplicationDefaults
