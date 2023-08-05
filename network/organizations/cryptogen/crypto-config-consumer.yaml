@@ -1,0 +1,10 @@
+PeerOrgs:
+  - Name: consumer
+    Domain: consumer.drugcounterfeit.com
+    EnableNodeOUS: true
+    Template:
+      Count: 2
+      SANS:
+        - localhost
+    Users:
+      Count: 1
