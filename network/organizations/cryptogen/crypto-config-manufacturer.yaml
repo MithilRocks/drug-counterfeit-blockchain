@@ -1,7 +1,7 @@
 PeerOrgs:
   - Name: manufacturer
     Domain: manufacturer.drugcounterfeit.com
-    EnableNodeOUS: true
+    EnableNodeOUs: true
     Template:
       Count: 2
       SANS:

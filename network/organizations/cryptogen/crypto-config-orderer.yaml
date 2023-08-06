@@ -1,8 +1,8 @@
 OrdererOrgs:
   - Name: Orderer
     Domain: drugcounterfeit.com
-    EnableNodeOUS: true
-    Specs: 
+    EnableNodeOUs: true
+    Specs:
       - Hostname: orderer
         SANS:
           - localhost

@@ -68,7 +68,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_certnet
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
-      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -105,7 +105,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_certnet
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
-      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -142,7 +142,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_certnet
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
-      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -179,7 +179,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_certnet
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
-      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -216,7 +216,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_certnet
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
-      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -253,7 +253,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_certnet
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
-      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -290,7 +290,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_certnet
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
-      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -327,7 +327,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_certnet
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
-      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -364,7 +364,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_certnet
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
-      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
@@ -401,7 +401,7 @@ services:
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_certnet
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
-      - CORE_PEER_TLS_ENABLED=false
+      - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
