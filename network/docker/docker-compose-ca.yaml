@@ -6,8 +6,8 @@
 version: '2.1'
 
 networks:
-  certnet:
-    name: network_certnet
+  pharmachannel:
+    name: network_pharmachannel
 
 services:
 
@@ -27,7 +27,7 @@ services:
       # - ../organizations/fabric-ca/consumer:/etc/hyperledger/fabric-ca-server
     container_name: ca_consumer
     networks:
-      - certnet
+      - pharmachannel
 
   ca_distributor:
     image: hyperledger/fabric-ca:latest
@@ -45,7 +45,7 @@ services:
     #  - ../organizations/fabric-ca/distributor:/etc/hyperledger/fabric-ca-server
     container_name: ca_distributor
     networks:
-      - certnet
+      - pharmachannel
 
   ca_manufacturer:
     image: hyperledger/fabric-ca:latest
@@ -63,7 +63,7 @@ services:
     #  - ../organizations/fabric-ca/manufacturer:/etc/hyperledger/fabric-ca-server
     container_name: ca_manufacturer
     networks:
-      - certnet
+      - pharmachannel
 
   ca_retailer:
     image: hyperledger/fabric-ca:latest
@@ -81,7 +81,7 @@ services:
     #  - ../organizations/fabric-ca/retailer:/etc/hyperledger/fabric-ca-server
     container_name: ca_retailer
     networks:
-      - certnet
+      - pharmachannel
 
   ca_transporter:
     image: hyperledger/fabric-ca:latest
@@ -99,7 +99,7 @@ services:
     #  - ../organizations/fabric-ca/transporter:/etc/hyperledger/fabric-ca-server
     container_name: ca_transporter
     networks:
-      - certnet
+      - pharmachannel
 
   ca_orderer:
     image: hyperledger/fabric-ca:latest
@@ -117,4 +117,4 @@ services:
     #  - ../organizations/fabric-ca/orderer:/etc/hyperledger/fabric-ca-server
     container_name: ca_orderer
     networks:
-      - certnet
+      - pharmachannel

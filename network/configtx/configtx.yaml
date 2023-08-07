@@ -148,7 +148,7 @@ Capabilities:
   Orderer: &OrdererCapabilities
     V2_0: true
   Application: &ApplicationCapabilities
-    V2_0: true
+    V2_5: true
 
 
 Application: &ApplicationDefaults
