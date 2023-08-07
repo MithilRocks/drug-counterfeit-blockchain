@@ -26,8 +26,13 @@ class PharmaContract extends Contract{
 
     async registerCompany(ctx, companyCRN, companyName, Location, organisationRole){
 
-        const organizationKey = ctx.stub.createCompositeKey('pharmanet.organization', [companyCRN]);
+        // access to all but the consumer
+        let msgSenderMSP = ctx.clientIdentity.getMSPID();
+        if(msgSenderMSP == "consumerMSP"){
+            throw new Error('Consumer cannot register a company.');
+        }
 
+        const organizationKey = ctx.stub.createCompositeKey('pharmanet.organization', [companyCRN]);
         let newOrganizationObject = {
             companyId: organizationKey,
             name: companyName,
@@ -285,6 +290,7 @@ class PharmaContract extends Contract{
     }
 
     /**
+     * This transaction is called by the retailer while selling the drug to a consumer. 
      * 
      * @param ctx 
      * @param drugName 
@@ -321,6 +327,66 @@ class PharmaContract extends Contract{
             throw new Error('Error selling drug. Retailer(CRN:' + retailerCRN + ') is not the owner of the drug.')
         }
     }
+
+    /**
+     * Get history of an asset from database
+     * 
+     * @param ctx 
+     * @param drugName 
+     * @param serialNo 
+     * @returns 
+     */
+    async viewHistory(ctx, drugName, serialNo){
+        const drugKey = ctx.stub.createCompositeKey('pharmanet.drug', [drugName + '-' +serialNo]);
+        let drugHistoryIterator = await ctx.stub.getGetHistoryForKey(drugKey).catch(err => console.log(err));
+        return await this.iterateResults(drugHistoryIterator);
+    }
+
+    /**
+     * This transaction is used to view the current state of the Asset.
+     * 
+     * @param ctx 
+     * @param drugName 
+     * @param serialNo 
+     * @returns {Object}
+     */
+    async viewDrugCurrentState(ctx, drugName, serialNo){
+        const drugKey = ctx.stub.createCompositeKey('pharmanet.drug', [drugName + '-' +serialNo]);
+        let drugBuffer = await ctx.stub.getState(drugKey).catch(err => console.log(err));
+        return JSON.parse(drugBuffer.toString());
+    }
+
+    /**
+	 * Iterate through the StateQueryIterator object and return an array of all values contained in it
+	 * @param iterator
+	 * @returns {Promise<[JSON]>}
+	 * [] {Key:, Value:} [{}], {Key:, Value:} [{},{}] [{},{},{},{}]
+	 */
+	async iterateResults(iterator) {
+		let allResults = [];
+		while (true) {
+			let res = await iterator.next();
+
+			if (res.value && res.value.value.toString()) {
+				let jsonRes = {};
+				console.log(res.value.value.toString());
+				jsonRes.Key = res.value.key;
+				try {
+					jsonRes.Record = JSON.parse(res.value.value.toString());
+				} catch (err) {
+					console.log(err);
+					jsonRes.Record = res.value.value.toString();
+				}
+				allResults.push(jsonRes);
+			}
+			if (res.done) {
+				console.log('end of data');
+				await iterator.close();
+				console.info(allResults);
+				return allResults;
+			}
+		}
+	}
 }
 
 module.exports = PharmaContract;
