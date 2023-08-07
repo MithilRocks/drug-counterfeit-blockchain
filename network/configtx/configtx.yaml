@@ -235,29 +235,14 @@ Channel: &ChannelDefaults
   Capabilities:
     <<: *ChannelCapabilities
 
-
 Profiles:
-
   DrugCounterfeitOrdererGenesis:
     <<: *ChannelDefaults
     Orderer:
       <<: *OrdererDefaults
       Organizations:
         - *OrdererOrg
-      Capabilities:
-        <<: *OrdererCapabilities
-    Consortiums:
-      DrugCounterfeitConsortium:
-        Organizations:
-          - *consumer
-          - *distributor
-          - *manufacturer
-          - *retailer
-          - *transporter
-
-  DrugCounterfeitChannel:
-    Consortium: DrugCounterfeitConsortium
-    <<: *ChannelDefaults
+      Capabilities: *OrdererCapabilities
     Application:
       <<: *ApplicationDefaults
       Organizations:
@@ -266,5 +251,4 @@ Profiles:
         - *manufacturer
         - *retailer
         - *transporter
-      Capabilities:
-        <<: *ApplicationCapabilities
+      Capabilities: *ApplicationCapabilities
