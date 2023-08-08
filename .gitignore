@@ -6,3 +6,4 @@ network/channel-artifacts
 test-network
 chaincode/node_modules
 pharmanet.tar.gz
+application/node_modules
