@@ -72,6 +72,8 @@ services:
       service: hyperledger-fabric
     environment:
       #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_pharmanet
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=false
@@ -90,6 +92,7 @@ services:
       - CORE_OPERATIONS_LISTENADDRESS=peer0.consumer.drugcounterfeit.com:9444
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/consumer.drugcounterfeit.com/peers/peer0.consumer.drugcounterfeit.com:/etc/hyperledger/fabric
       - peer0.consumer.drugcounterfeit.com:/var/hyperledger/production
     working_dir: /root
@@ -107,6 +110,8 @@ services:
       service: hyperledger-fabric
     environment:
       #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_pharmanet
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=false
@@ -125,6 +130,7 @@ services:
       - CORE_OPERATIONS_LISTENADDRESS=peer1.consumer.drugcounterfeit.com:9445
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/consumer.drugcounterfeit.com/peers/peer1.consumer.drugcounterfeit.com:/etc/hyperledger/fabric
       - peer1.consumer.drugcounterfeit.com:/var/hyperledger/production
     working_dir: /root
@@ -142,6 +148,8 @@ services:
       service: hyperledger-fabric
     environment:
       #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_pharmanet
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=false
@@ -160,6 +168,7 @@ services:
       - CORE_OPERATIONS_LISTENADDRESS=peer0.distributor.drugcounterfeit.com:9446
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/distributor.drugcounterfeit.com/peers/peer0.distributor.drugcounterfeit.com:/etc/hyperledger/fabric
       - peer0.distributor.drugcounterfeit.com:/var/hyperledger/production
     working_dir: /root
@@ -177,6 +186,8 @@ services:
       service: hyperledger-fabric
     environment:
       #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_pharmanet
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=false
@@ -195,6 +206,7 @@ services:
       - CORE_OPERATIONS_LISTENADDRESS=peer1.distributor.drugcounterfeit.com:9447
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/distributor.drugcounterfeit.com/peers/peer1.distributor.drugcounterfeit.com:/etc/hyperledger/fabric
       - peer1.distributor.drugcounterfeit.com:/var/hyperledger/production
     working_dir: /root
@@ -212,6 +224,8 @@ services:
       service: hyperledger-fabric
     environment:
       #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_pharmanet
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=false
@@ -230,6 +244,7 @@ services:
       - CORE_OPERATIONS_LISTENADDRESS=peer0.manufacturer.drugcounterfeit.com:9448
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/manufacturer.drugcounterfeit.com/peers/peer0.manufacturer.drugcounterfeit.com:/etc/hyperledger/fabric
       - peer0.manufacturer.drugcounterfeit.com:/var/hyperledger/production
     working_dir: /root
@@ -247,6 +262,8 @@ services:
       service: hyperledger-fabric
     environment:
       #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_pharmanet
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=false
@@ -265,6 +282,7 @@ services:
       - CORE_OPERATIONS_LISTENADDRESS=peer1.manufacturer.drugcounterfeit.com:9449
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/manufacturer.drugcounterfeit.com/peers/peer1.manufacturer.drugcounterfeit.com:/etc/hyperledger/fabric
       - peer1.manufacturer.drugcounterfeit.com:/var/hyperledger/production
     working_dir: /root
@@ -282,6 +300,8 @@ services:
       service: hyperledger-fabric
     environment:
       #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_pharmanet
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=false
@@ -300,6 +320,7 @@ services:
       - CORE_OPERATIONS_LISTENADDRESS=peer0.retailer.drugcounterfeit.com:9450
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/retailer.drugcounterfeit.com/peers/peer0.retailer.drugcounterfeit.com:/etc/hyperledger/fabric
       - peer0.retailer.drugcounterfeit.com:/var/hyperledger/production
     working_dir: /root
@@ -317,6 +338,8 @@ services:
       service: hyperledger-fabric
     environment:
       #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_pharmanet
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=false
@@ -335,6 +358,7 @@ services:
       - CORE_OPERATIONS_LISTENADDRESS=peer1.retailer.drugcounterfeit.com:9451
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/retailer.drugcounterfeit.com/peers/peer1.retailer.drugcounterfeit.com:/etc/hyperledger/fabric
       - peer1.retailer.drugcounterfeit.com:/var/hyperledger/production
     working_dir: /root
@@ -352,6 +376,8 @@ services:
       service: hyperledger-fabric
     environment:
       #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_pharmanet
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=false
@@ -370,6 +396,7 @@ services:
       - CORE_OPERATIONS_LISTENADDRESS=peer0.transporter.drugcounterfeit.com:9452
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/transporter.drugcounterfeit.com/peers/peer0.transporter.drugcounterfeit.com:/etc/hyperledger/fabric
       - peer0.transporter.drugcounterfeit.com:/var/hyperledger/production
     working_dir: /root
@@ -387,6 +414,8 @@ services:
       service: hyperledger-fabric
     environment:
       #Generic peer variables
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_pharmanet
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_PROFILE_ENABLED=false
@@ -405,6 +434,7 @@ services:
       - CORE_OPERATIONS_LISTENADDRESS=peer1.transporter.drugcounterfeit.com:9453
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
     volumes:
+      - /var/run/docker.sock:/host/var/run/docker.sock
       - ../organizations/peerOrganizations/transporter.drugcounterfeit.com/peers/peer1.transporter.drugcounterfeit.com:/etc/hyperledger/fabric
       - peer1.transporter.drugcounterfeit.com:/var/hyperledger/production
     working_dir: /root

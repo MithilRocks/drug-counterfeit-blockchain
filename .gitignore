@@ -5,3 +5,4 @@ network/system-genesis-block
 network/channel-artifacts
 test-network
 chaincode/node_modules
+pharmanet.tar.gz
