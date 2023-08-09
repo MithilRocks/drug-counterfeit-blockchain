@@ -148,7 +148,7 @@ class PharmaContract extends Contract{
         const buyer = JSON.parse(buyerBuffer.toString());
         const seller = JSON.parse(sellerBuffer.toString());
 
-        if(buyer.organisationRole !== seller.organisationRole - 1){
+        if(buyer.hierarchyKey - seller.hierarchyKey !== 1){
             throw new Error('The buyer does not have the autority to buy from the seller due to incorrect order of organizational roles.');
         }
 
@@ -199,23 +199,24 @@ class PharmaContract extends Contract{
 
         const purchaseOrder = JSON.parse(poBuffer.toString());
 
-        if(listOfAssets.length !== purchaseOrder.quantity){
-            throw new Error('Error Creating Shipment. List of Assets doesn\'t match Purchase Order quantity.');
+        const listOfAssetsArr = listOfAssets.split(',')
+        if(listOfAssetsArr.length != parseInt(purchaseOrder.quantity)){
+            throw new Error('Error Creating Shipment. Quantity of Assets (' + listOfAssetsArr.length + ') doesn\'t match Purchase Order quantity (' + purchaseOrder.quantity + ')');
         }
 
         let assets = [];
 
         //check if assets are valid
-        listOfAssets.forEach(async (assetID) => {
-            let drugKey = ctx.stub.createCompositeKey('pharmanet.drug', [drugName + '-' + assetID]);
-            assets.push(drugKey);
-
+        for(let assetID of listOfAssetsArr){
+            const drugKey = ctx.stub.createCompositeKey('pharmanet.drug', [drugName + '-' + assetID]);
             let drugBuffer = await ctx.stub.getState(drugKey).catch(err => console.log(err));
+            assets.push(drugKey);
             
+            // check if drug exists
             if(drugBuffer.length === 0){
                 throw new Error('Error Creating Shipment. Asset with ID ' + assetID + ' doesn\'t exist for Drug ' + drugName);
             }
-        });
+        }
 
         const shipmentKey = ctx.stub.createCompositeKey('pharmanet.shipment', [buyerCRN + '-' + drugName]);
         const transporterKey = ctx.stub.createCompositeKey('pharmanet.organization', [transporterCRN + '-' + transporterName]);
@@ -305,16 +306,17 @@ class PharmaContract extends Contract{
      * @param drugName 
      * @param serialNo 
      * @param retailerCRN 
+     * @param retailerName 
      * @param customerAadhar 
      * @returns {Object}
      */
-    async retailDrug(ctx, drugName, serialNo, retailerCRN, customerAadhar){
+    async retailDrug(ctx, drugName, serialNo, retailerCRN, retailerName, customerAadhar){
         let msgSenderMSP = ctx.clientIdentity.getMSPID();
         if(msgSenderMSP !== "retailerMSP"){
             throw new Error('Only a Retailer can sell the Drug to the Customer.');
         }
 
-        const retailerKey = ctx.stub.createCompositeKey('pharmanet.organization', [retailerCRN]);
+        const retailerKey = ctx.stub.createCompositeKey('pharmanet.organization', [retailerCRN + '-' + retailerName]);
         let retailerBuffer = await ctx.stub.getState(retailerKey).catch(err => console.log(err));
         if(retailerBuffer.length === 0){
             throw new Error('Error selling drug. Retailer(CRN:' + retailerCRN + ') does not exist.');
@@ -347,6 +349,14 @@ class PharmaContract extends Contract{
      */
     async viewHistory(ctx, drugName, serialNo){
         const drugKey = ctx.stub.createCompositeKey('pharmanet.drug', [drugName + '-' +serialNo]);
+        let drugBuffer = await ctx.stub.getState(drugKey).catch(err => console.log(err));
+
+        // check if drug exists
+        if(drugBuffer.length === 0){
+            throw new Error('Drug ' + drugName + ' with serial no. ' + serialNo + ' does not exist.');
+        }
+
+        // get history
         let drugHistoryIterator = await ctx.stub.getGetHistoryForKey(drugKey).catch(err => console.log(err));
         return await this.iterateResults(drugHistoryIterator);
     }
@@ -362,6 +372,12 @@ class PharmaContract extends Contract{
     async viewDrugCurrentState(ctx, drugName, serialNo){
         const drugKey = ctx.stub.createCompositeKey('pharmanet.drug', [drugName + '-' +serialNo]);
         let drugBuffer = await ctx.stub.getState(drugKey).catch(err => console.log(err));
+
+        // check if drug exists
+        if(drugBuffer.length === 0){
+            throw new Error('Drug ' + drugName + ' with serial no. ' + serialNo + ' does not exist.');
+        }
+
         return JSON.parse(drugBuffer.toString());
     }
 
