@@ -181,7 +181,7 @@ class PharmaContract extends Contract{
      * @param transporterName
      * @returns {Object}
      */
-    async createShipment(ctx, buyerCRN, buyerName, sellerCRN, drugName, listOfAssets, transporterCRN, transporterName){
+    async createShipment(ctx, buyerCRN, sellerCRN, drugName, listOfAssets, transporterCRN, transporterName){
         // check if a distributor or manufacturer is initiating the purchase order
         let msgSenderMSP = ctx.clientIdentity.getMSPID();
         if(msgSenderMSP !== "distributorMSP" && msgSenderMSP !== "manufacturerMSP"){
@@ -220,8 +220,20 @@ class PharmaContract extends Contract{
 
         const shipmentKey = ctx.stub.createCompositeKey('pharmanet.shipment', [buyerCRN + '-' + drugName]);
         const transporterKey = ctx.stub.createCompositeKey('pharmanet.organization', [transporterCRN + '-' + transporterName]);
-        const buyerKey = ctx.stub.createCompositeKey('pharmanet.organization', [buyerCRN + '-' + buyerName]);
 
+        //update owner of each asset
+        for(let assetKey of assets){
+            let drugBuffer = await ctx.stub.getState(assetKey).catch(err => console.log(err));
+            let drug = JSON.parse(drugBuffer.toString());
+
+            // set owner of drug; in this case, it is the transporter
+            drug.owner = transporterKey;
+
+            let dataBuffer = Buffer.from(JSON.stringify(drug));
+		    await ctx.stub.putState(assetKey, dataBuffer);
+        }
+
+        // create shipment object
         let shipmentObject = {
             shipmentID: shipmentKey,
             creator: creator,
@@ -229,21 +241,9 @@ class PharmaContract extends Contract{
             transporter: transporterKey,
             status: 'In-Transit'
         }
-        
+
         let dataBuffer = Buffer.from(JSON.stringify(shipmentObject));
 		await ctx.stub.putState(shipmentKey, dataBuffer);
-
-        //update owner of each asset
-        assets.forEach(async (asset) => {
-            let drugBuffer = await ctx.stub.getState(asset).catch(err => console.log(err));
-            let drug = JSON.parse(drugBuffer.toString());
-
-            // set owner of drug
-            drug.owner = buyerKey;
-
-            let dataBuffer = Buffer.from(JSON.stringify(drug));
-		    await ctx.stub.putState(asset, dataBuffer);
-        });
 
         return shipmentObject;
     }
@@ -257,7 +257,7 @@ class PharmaContract extends Contract{
      * @param transporterCRN 
      * @returns {Object}
      */
-    async updateShipment(ctx, buyerCRN, drugName, transporterCRN, transporterName){
+    async updateShipment(ctx, buyerCRN, buyerName, drugName, transporterCRN, transporterName){
         let msgSenderMSP = ctx.clientIdentity.getMSPID();
         if(msgSenderMSP !== "transporterMSP"){
             throw new Error('Only a Transporter can Update Shipment.');
@@ -265,6 +265,7 @@ class PharmaContract extends Contract{
 
         const shipmentKey = ctx.stub.createCompositeKey('pharmanet.shipment', [buyerCRN + '-' + drugName]);
         const transporterKey = ctx.stub.createCompositeKey('pharmanet.organization', [transporterCRN + '-' + transporterName]);
+        const buyerKey = ctx.stub.createCompositeKey('pharmanet.organization', [buyerCRN + '-' + buyerName]);
 
         let shipmentBuffer = await ctx.stub.getState(shipmentKey).catch(err => console.log(err));
 
@@ -272,24 +273,31 @@ class PharmaContract extends Contract{
             throw new Error('Error Updating Shipment. Shipment by Buyer(CRN: ' + buyerCRN + ') for Drug ' + drugName + ' not found.');
         }
 
-        const shipment = JSON.parse(shipmentBuffer.toString());
+        let shipment = JSON.parse(shipmentBuffer.toString());
 
         if(shipment.transporter !== transporterKey){
             throw new Error('Only the Transporter of this Shipment can Update this Shipment.');
         }
 
-        // add to shipment list of every consignment
-        shipment.assets.forEach(async (assetKey) => {
+        // add to shipment list of every consignment; change buyer
+        for(let assetKey of shipment.assets){
             let drugBuffer = await ctx.stub.getState(assetKey).catch(err => console.log(err));
             let drug = JSON.parse(drugBuffer.toString());
-            let shipmentList = drug.shipment
 
-            //update shipment list
-            drug.shipment = shipmentList.push(shipmentKey);
+            // update shipment list
+            if(drug.shipment.length === 0){
+                drug.shipment = [];
+                drug.shipment.push(shipmentKey);
+            } else {
+                drug.shipment.push(shipmentKey);
+            }
+
+            // update owner
+            drug.owner = buyerKey;
 
             let dataBuffer = Buffer.from(JSON.stringify(drug));
-		    await ctx.stub.putState(asset, dataBuffer);
-        });
+		    await ctx.stub.putState(assetKey, dataBuffer);
+        }
 
         // update status of shipment
         shipment.status = 'Delivered';  
@@ -327,9 +335,10 @@ class PharmaContract extends Contract{
         if(drugBuffer.length === 0){
             throw new Error('Error selling drug. Drug ' + drugName + ' does not exist.');
         }
-        const drug = JSON.parse(retailerBuffer.toString());
 
-        if(drug.owner === retailerKey){
+        let drug = JSON.parse(drugBuffer.toString());
+
+        if(drug.owner == retailerKey){
             drug.owner = customerAadhar;
             let dataBuffer = Buffer.from(JSON.stringify(drug));
 		    await ctx.stub.putState(drugKey, dataBuffer);
@@ -357,7 +366,7 @@ class PharmaContract extends Contract{
         }
 
         // get history
-        let drugHistoryIterator = await ctx.stub.getGetHistoryForKey(drugKey).catch(err => console.log(err));
+        let drugHistoryIterator = await ctx.stub.getHistoryForKey(drugKey).catch(err => console.log(err));
         return await this.iterateResults(drugHistoryIterator);
     }
 

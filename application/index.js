@@ -130,21 +130,97 @@ app.post('/createShipment', (req, res) => {
             message: 'No body parameters found!'
         };
         res.status(400).send(result);
-    } else if(!req.body.peer || !req.body.buyerCRN || !req.body.buyerName || !req.body.sellerCRN || !req.body.drugName || !req.body.listOfAssets || !req.body.transporterCRN || !req.body.transporterName) {
+    } else if(!req.body.peer || !req.body.buyerCRN || !req.body.sellerCRN || !req.body.drugName || !req.body.listOfAssets || !req.body.transporterCRN || !req.body.transporterName) {
         let result = {
             status: 'error',
-            message: 'One of the following parameters is missing: peer, buyerCRN, buyerName, sellerCRN, drugName, listOfAssets, transporterCRN, transporterName'
+            message: 'One of the following parameters is missing: peer, buyerCRN, sellerCRN, drugName, listOfAssets, transporterCRN, transporterName'
         }
         res.status(400).send(result);
     } else {
         main.execute(
-            'createShipment', req.body.peer, 'pharmachannel', 'pharmanet', req.body.buyerCRN, req.body.buyerName, req.body.sellerCRN, req.body.drugName, req.body.listOfAssets, req.body.transporterCRN, req.body.transporterName
-        ).then((po) => {
+            'createShipment', req.body.peer, 'pharmachannel', 'pharmanet', req.body.buyerCRN, req.body.sellerCRN, req.body.drugName, req.body.listOfAssets, req.body.transporterCRN, req.body.transporterName
+        ).then((shipment) => {
             console.log('Shipment Created Successfully!');
             const result = {
                 status: 'success',
                 message: 'Shipment Created Successfully!',
-                po: po
+                shipment: shipment
+            };
+            res.json(result);
+        }).catch((e) => {
+            const result = {
+                status: 'error',
+                message: 'Failed', 
+                error: e.responses[0].response.message
+            };
+            res.status(500).send(result);
+        }).finally(() => {
+            main.disconnect();
+        });
+    }
+});
+
+app.post('/updateShipment', (req, res) => {
+    // buyerCRN, buyerName, sellerCRN, drugName, listOfAssets, transporterCRN, transporterName
+    if(!Object.keys(req.body).length) {
+        const result = {
+            status: 'error',
+            message: 'No body parameters found!'
+        };
+        res.status(400).send(result);
+    } else if(!req.body.peer || !req.body.buyerCRN || !req.body.buyerName || !req.body.drugName || !req.body.transporterCRN || !req.body.transporterName) {
+        let result = {
+            status: 'error',
+            message: 'One of the following parameters is missing: peer, buyerCRN, buyerName, drugName, transporterCRN, transporterName'
+        }
+        res.status(400).send(result);
+    } else {
+        main.execute(
+            'updateShipment', req.body.peer, 'pharmachannel', 'pharmanet', req.body.buyerCRN, req.body.buyerName, req.body.drugName, req.body.transporterCRN, req.body.transporterName
+        ).then((shipment) => {
+            console.log('Shipment Updated Successfully!');
+            const result = {
+                status: 'success',
+                message: 'Shipment Updated Successfully!',
+                shipment: shipment
+            };
+            res.json(result);
+        }).catch((e) => {
+            const result = {
+                status: 'error',
+                message: 'Failed', 
+                error: e.responses[0].response.message
+            };
+            res.status(500).send(result);
+        }).finally(() => {
+            main.disconnect();
+        });
+    }
+});
+
+app.post('/retailDrug', (req, res) => {
+    // drugName, serialNo, retailerCRN, retailerName, customerAadhar
+    if(!Object.keys(req.body).length) {
+        const result = {
+            status: 'error',
+            message: 'No body parameters found!'
+        };
+        res.status(400).send(result);
+    } else if(!req.body.peer || !req.body.drugName || !req.body.serialNo || !req.body.retailerCRN || !req.body.retailerName || !req.body.customerAadhar) {
+        let result = {
+            status: 'error',
+            message: 'One of the following parameters is missing: peer, drugName, serialNo, retailerCRN, retailerName, customerAadhar'
+        }
+        res.status(400).send(result);
+    } else {
+        main.execute(
+            'retailDrug', req.body.peer, 'pharmachannel', 'pharmanet', req.body.drugName, req.body.serialNo, req.body.retailerCRN, req.body.retailerName, req.body.customerAadhar
+        ).then((drug) => {
+            console.log('Drug Sold Successfully!');
+            const result = {
+                status: 'success',
+                message: 'Drug Sold Successfully!',
+                drug: drug
             };
             res.json(result);
         }).catch((e) => {

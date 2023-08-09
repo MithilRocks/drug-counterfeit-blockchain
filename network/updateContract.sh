@@ -3,8 +3,8 @@ export CHANNEL_NAME=pharmachannel
 export CC_NAME=pharmanet
 export CC_SRC_PATH=../chaincode
 export CC_RUNTIME_LANGUAGE=node
-export CC_VERSION=2.3
-export CC_SEQUENCE=28
+export CC_VERSION=1.0
+export CC_SEQUENCE=1
 export FABRIC_CFG_PATH=$PWD/../config/
 export CORE_PEER_TLS_ENABLED=true
 

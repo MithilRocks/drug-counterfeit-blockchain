@@ -1,5 +1,3 @@
-let hey = "001,002, 003"
-heyArr = hey.split(",")
-heyArr.forEach((elem) => {
-    console.log(elem.trim());
-})
+let temp = [];
+temp.push("xyz");
+console.log(temp);
