@@ -32,7 +32,19 @@ class PharmaContract extends Contract{
             throw new Error('Consumer cannot register a company.');
         }
 
-        const organizationKey = ctx.stub.createCompositeKey('pharmanet.organization', [companyCRN]);
+        // only peers whose msp matches with the organisation they are trying to register 
+        // are allowed to invoke this function
+        if(msgSenderMSP !== organisationRole + "MSP"){
+            throw new Error('Your organisation is a ' + msgSenderMSP.replace('MSP', '') + '; you cannot register this company.');
+        }
+
+        //check if company already exists
+        const organizationKey = ctx.stub.createCompositeKey('pharmanet.organization', [companyCRN + '-' + companyName]);
+        let company = await ctx.stub.getState(organizationKey).catch(err => console.log(err));
+        if(company.length !== 0){
+            throw new Error('Company ' + companyName + ' with CRN ' + companyCRN + ' already exists');
+        }
+
         let newOrganizationObject = {
             companyId: organizationKey,
             name: companyName,
@@ -40,12 +52,14 @@ class PharmaContract extends Contract{
             organisationRole: organisationRole
         }
 
-        if(organisationRole == "Manufacturer"){
+        if(organisationRole == "manufacturer"){
             newOrganizationObject.hierarchyKey = 1;
-        } else if(organisationRole == "Distributor"){
+        } else if(organisationRole == "distributor"){
             newOrganizationObject.hierarchyKey = 2;
-        } else if(organisationRole == "Retailer"){
+        } else if(organisationRole == "retailer"){
             newOrganizationObject.hierarchyKey = 3;
+        } else if(organisationRole !== "transporter"){
+            throw new Error('Incorrect Organisation Role provided.');
         }
 
         let dataBuffer = Buffer.from(JSON.stringify(newOrganizationObject));
@@ -64,16 +78,14 @@ class PharmaContract extends Contract{
      * @param companyCRN
      * @returns {Object}
      */
-
-    async addDrug(ctx, drugName, serialNo, mfgDate, expDate, companyCRN){
+    async addDrug(ctx, drugName, serialNo, mfgDate, expDate, companyCRN, companyName){
         let msgSenderMSP = ctx.clientIdentity.getMSPID();
-
-        const drugKey = ctx.stub.createCompositeKey('pharmanet.drug', [drugName + '-' + serialNo]);
-        const organizationKey = ctx.stub.createCompositeKey('pharmanet.organization', [companyCRN]);
-
         if(msgSenderMSP !== "manufacturerMSP"){
             throw new Error('Only a Manufacturer can add a new drug');
         }
+
+        const drugKey = ctx.stub.createCompositeKey('pharmanet.drug', [drugName + '-' + serialNo]);
+        const organizationKey = ctx.stub.createCompositeKey('pharmanet.organization', [companyCRN + '-' + companyName]);
 
         let drug = await ctx.stub.getState(drugKey).catch(err => console.log(err));
 
@@ -104,31 +116,33 @@ class PharmaContract extends Contract{
      * 
      * @param ctx 
      * @param buyerCRN 
-     * @param sellerCRN 
+     * @param buyerName
+     * @param sellerCRN
+     * @param sellerName  
      * @param drugName 
      * @param quantity 
      * @returns {Object} 
      */
-    async createPO(ctx, buyerCRN, sellerCRN, drugName, quantity){
+    async createPO(ctx, buyerCRN, buyerName, sellerCRN, sellerName, drugName, quantity){
         // check if a distributor or retailer is initiating the purchase order
         let msgSenderMSP = ctx.clientIdentity.getMSPID();
-        if(msgSenderMSP !== "distributorMSP" || msgSenderMSP !== "retailerMSP"){
+        if(msgSenderMSP !== "distributorMSP" && msgSenderMSP !== "retailerMSP"){
             throw new Error('Only a Distributor or Retailer can create a Purchase Order');
         }
 
         // get buyer and seller info
-        const buyerKey = ctx.stub.createCompositeKey('pharmanet.organization', [buyerCRN]);
-        const sellerKey = ctx.stub.createCompositeKey('pharmanet.organization', [sellerCRN]);
+        const buyerKey = ctx.stub.createCompositeKey('pharmanet.organization', [buyerCRN + '-' + buyerName]);
+        const sellerKey = ctx.stub.createCompositeKey('pharmanet.organization', [sellerCRN + '-' + sellerName]);
 
         let buyerBuffer = await ctx.stub.getState(buyerKey).catch(err => console.log(err));
         let sellerBuffer = await ctx.stub.getState(sellerKey).catch(err => console.log(err));
 
         if(buyerBuffer.length === 0 ){
-            throw new Error('Buyer with CRN ' + buyerCRN + ' doesn\'t exist.');
+            throw new Error('Buyer ' + buyerName + 'with CRN ' + buyerCRN + ' doesn\'t exist.');
         }
 
         if(sellerBuffer.length === 0 ){
-            throw new Error('Seller with CRN ' + sellerCRN + ' doesn\'t exist.');
+            throw new Error('Seller ' + sellerName + 'with CRN ' + sellerCRN + ' doesn\'t exist.');
         }
 
         const buyer = JSON.parse(buyerBuffer.toString());
@@ -164,12 +178,13 @@ class PharmaContract extends Contract{
      * @param drugName 
      * @param listOfAssets 
      * @param transporterCRN 
+     * @param transporterName
      * @returns {Object}
      */
-    async createShipment(ctx, buyerCRN, sellerCRN, drugName, listOfAssets, transporterCRN){
-        // check if a distributor or retailer is initiating the purchase order
+    async createShipment(ctx, buyerCRN, buyerName, sellerCRN, drugName, listOfAssets, transporterCRN, transporterName){
+        // check if a distributor or manufacturer is initiating the purchase order
         let msgSenderMSP = ctx.clientIdentity.getMSPID();
-        if(msgSenderMSP !== "distributorMSP" || msgSenderMSP !== "manufacturerMSP"){
+        if(msgSenderMSP !== "distributorMSP" && msgSenderMSP !== "manufacturerMSP"){
             throw new Error('Error Creating Shipment. Only a Distributor or Manufacturer can create a shipment');
         }
 
@@ -203,8 +218,8 @@ class PharmaContract extends Contract{
         });
 
         const shipmentKey = ctx.stub.createCompositeKey('pharmanet.shipment', [buyerCRN + '-' + drugName]);
-        const transporterKey = ctx.stub.createCompositeKey('pharmanet.organization', [transporterCRN]);
-        const buyerKey = ctx.stub.createCompositeKey('pharmanet.organization', [buyerCRN]);
+        const transporterKey = ctx.stub.createCompositeKey('pharmanet.organization', [transporterCRN + '-' + transporterName]);
+        const buyerKey = ctx.stub.createCompositeKey('pharmanet.organization', [buyerCRN + '-' + buyerName]);
 
         let shipmentObject = {
             shipmentID: shipmentKey,
@@ -220,12 +235,9 @@ class PharmaContract extends Contract{
         //update owner of each asset
         assets.forEach(async (asset) => {
             let drugBuffer = await ctx.stub.getState(asset).catch(err => console.log(err));
-
-            if(drugBuffer.length === 0){
-                throw new Error('Error Creating Shipment. Asset with ID ' + asset + ' doesn\'t exist for Drug ' + drugName);
-            }
-
             let drug = JSON.parse(drugBuffer.toString());
+
+            // set owner of drug
             drug.owner = buyerKey;
 
             let dataBuffer = Buffer.from(JSON.stringify(drug));
@@ -244,14 +256,14 @@ class PharmaContract extends Contract{
      * @param transporterCRN 
      * @returns {Object}
      */
-    async updateShipment(ctx, buyerCRN, drugName, transporterCRN){
+    async updateShipment(ctx, buyerCRN, drugName, transporterCRN, transporterName){
         let msgSenderMSP = ctx.clientIdentity.getMSPID();
         if(msgSenderMSP !== "transporterMSP"){
             throw new Error('Only a Transporter can Update Shipment.');
         }
 
         const shipmentKey = ctx.stub.createCompositeKey('pharmanet.shipment', [buyerCRN + '-' + drugName]);
-        const transporterKey = ctx.stub.createCompositeKey('pharmanet.organization', [transporterCRN]);
+        const transporterKey = ctx.stub.createCompositeKey('pharmanet.organization', [transporterCRN + '-' + transporterName]);
 
         let shipmentBuffer = await ctx.stub.getState(shipmentKey).catch(err => console.log(err));
 
@@ -265,26 +277,23 @@ class PharmaContract extends Contract{
             throw new Error('Only the Transporter of this Shipment can Update this Shipment.');
         }
 
-        // update status of shipment
-        shipment.status = 'Delivered';  
-        let dataBuffer = Buffer.from(JSON.stringify(shipment));
-		await ctx.stub.putState(shipmentKey, dataBuffer);
-
         // add to shipment list of every consignment
         shipment.assets.forEach(async (assetKey) => {
             let drugBuffer = await ctx.stub.getState(assetKey).catch(err => console.log(err));
-            
-            if(drugBuffer.length === 0){
-                throw new Error('Error Updating Shipment. Drug ' + drugName + ' not found.');
-            }
-
             let drug = JSON.parse(drugBuffer.toString());
             let shipmentList = drug.shipment
+
+            //update shipment list
             drug.shipment = shipmentList.push(shipmentKey);
 
             let dataBuffer = Buffer.from(JSON.stringify(drug));
 		    await ctx.stub.putState(asset, dataBuffer);
         });
+
+        // update status of shipment
+        shipment.status = 'Delivered';  
+        let dataBuffer = Buffer.from(JSON.stringify(shipment));
+		await ctx.stub.putState(shipmentKey, dataBuffer);
         
         return shipment;
     }

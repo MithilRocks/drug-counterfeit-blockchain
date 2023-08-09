@@ -191,8 +191,8 @@ export CHANNEL_NAME=pharmachannel
 export CC_NAME=pharmanet
 export CC_SRC_PATH=../chaincode
 export CC_RUNTIME_LANGUAGE=node
-export CC_VERSION=1.1
-export CC_SEQUENCE=2
+export CC_VERSION=1.2
+export CC_SEQUENCE=3
 export FABRIC_CFG_PATH=$PWD/../config/
 peer lifecycle chaincode package ${CC_NAME}.tar.gz --path ${CC_SRC_PATH} --lang ${CC_RUNTIME_LANGUAGE} --label ${CC_NAME}_${CC_VERSION}
 

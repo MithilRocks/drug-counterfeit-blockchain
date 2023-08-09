@@ -1,0 +1,92 @@
+---
+name: test-network-consumer
+version: 1.0.0
+client:
+  organization: consumer
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  consumer:
+    mspid: consumerMSP
+    peers:
+    - peer0.consumer.drugcounterfeit.com
+    - peer1.consumer.drugcounterfeit.com
+    certificateAuthorities:
+    - ca.consumer.drugcounterfeit.com
+peers:
+  peer0.consumer.drugcounterfeit.com:
+    url: grpcs://localhost:7051
+    tlsCACerts:
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICijCCAjCgAwIBAgIRAJIURYzTpTS+aFMJum+ncBcwCgYIKoZIzj0EAwIwgY4x
+          CzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g
+          RnJhbmNpc2NvMSUwIwYDVQQKExxjb25zdW1lci5kcnVnY291bnRlcmZlaXQuY29t
+          MSswKQYDVQQDEyJ0bHNjYS5jb25zdW1lci5kcnVnY291bnRlcmZlaXQuY29tMB4X
+          DTIzMDgwNjA5NTEwMFoXDTMzMDgwMzA5NTEwMFowgY4xCzAJBgNVBAYTAlVTMRMw
+          EQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMSUwIwYD
+          VQQKExxjb25zdW1lci5kcnVnY291bnRlcmZlaXQuY29tMSswKQYDVQQDEyJ0bHNj
+          YS5jb25zdW1lci5kcnVnY291bnRlcmZlaXQuY29tMFkwEwYHKoZIzj0CAQYIKoZI
+          zj0DAQcDQgAEt13moHd8VGTKeerg+hpXgIPamsh1ULTf5Uc6cI9/LEGc0SigiQms
+          ZKvnF+7MbZ4zYxXYNHX9BCiUcQ+PqtbtCKNtMGswDgYDVR0PAQH/BAQDAgGmMB0G
+          A1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkG
+          A1UdDgQiBCB9rUsDctlmrgZyAuLmi8/qMplmymuUh9mxyU2So9wITDAKBggqhkjO
+          PQQDAgNIADBFAiAWEI6qMncPqU8dTDR1YYPHt1VbwkTUybf/xlV/rv8ImgIhAJBm
+          TpiYqWQM5lHxeid9ibJNnzTIN0cKLggmwBsGj8y/
+          -----END CERTIFICATE-----
+          
+    grpcOptions:
+      ssl-target-name-override: peer0.consumer.drugcounterfeit.com
+      hostnameOverride: peer0.consumer.drugcounterfeit.com
+  peer1.consumer.drugcounterfeit.com:
+    url: grpcs://localhost:8051
+    tlsCACerts:
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICijCCAjCgAwIBAgIRAJIURYzTpTS+aFMJum+ncBcwCgYIKoZIzj0EAwIwgY4x
+          CzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g
+          RnJhbmNpc2NvMSUwIwYDVQQKExxjb25zdW1lci5kcnVnY291bnRlcmZlaXQuY29t
+          MSswKQYDVQQDEyJ0bHNjYS5jb25zdW1lci5kcnVnY291bnRlcmZlaXQuY29tMB4X
+          DTIzMDgwNjA5NTEwMFoXDTMzMDgwMzA5NTEwMFowgY4xCzAJBgNVBAYTAlVTMRMw
+          EQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMSUwIwYD
+          VQQKExxjb25zdW1lci5kcnVnY291bnRlcmZlaXQuY29tMSswKQYDVQQDEyJ0bHNj
+          YS5jb25zdW1lci5kcnVnY291bnRlcmZlaXQuY29tMFkwEwYHKoZIzj0CAQYIKoZI
+          zj0DAQcDQgAEt13moHd8VGTKeerg+hpXgIPamsh1ULTf5Uc6cI9/LEGc0SigiQms
+          ZKvnF+7MbZ4zYxXYNHX9BCiUcQ+PqtbtCKNtMGswDgYDVR0PAQH/BAQDAgGmMB0G
+          A1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkG
+          A1UdDgQiBCB9rUsDctlmrgZyAuLmi8/qMplmymuUh9mxyU2So9wITDAKBggqhkjO
+          PQQDAgNIADBFAiAWEI6qMncPqU8dTDR1YYPHt1VbwkTUybf/xlV/rv8ImgIhAJBm
+          TpiYqWQM5lHxeid9ibJNnzTIN0cKLggmwBsGj8y/
+          -----END CERTIFICATE-----
+          
+    grpcOptions:
+      ssl-target-name-override: peer1.consumer.drugcounterfeit.com
+      hostnameOverride: peer1.consumer.drugcounterfeit.com
+certificateAuthorities:
+  ca.consumer.drugcounterfeit.com:
+    url: https://localhost:7054
+    caName: ca_consumer
+    tlsCACerts:
+      pem: 
+        - |
+          -----BEGIN CERTIFICATE-----
+          MIIChDCCAimgAwIBAgIQYpBSJ35Mk5aLdS+uTeLR0jAKBggqhkjOPQQDAjCBizEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xJTAjBgNVBAoTHGNvbnN1bWVyLmRydWdjb3VudGVyZmVpdC5jb20x
+          KDAmBgNVBAMTH2NhLmNvbnN1bWVyLmRydWdjb3VudGVyZmVpdC5jb20wHhcNMjMw
+          ODA2MDk1MTAwWhcNMzMwODAzMDk1MTAwWjCBizELMAkGA1UEBhMCVVMxEzARBgNV
+          BAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xJTAjBgNVBAoT
+          HGNvbnN1bWVyLmRydWdjb3VudGVyZmVpdC5jb20xKDAmBgNVBAMTH2NhLmNvbnN1
+          bWVyLmRydWdjb3VudGVyZmVpdC5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNC
+          AARlT33rXaN1SKAVowu3osGoE5T91CDUf8UFhUjmuiVhv+CaS1j06YsuES+PABBK
+          WO4VuZKI12diwbOI3aomGpEeo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYw
+          FAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIE
+          IEhRYhFOKPI8+C+9P9nvSZDEWn7n0UB42IrR+o+oMAhaMAoGCCqGSM49BAMCA0kA
+          MEYCIQDSTiTGxSzpJD5jvQkzf92UlJii2ZR8RKW/iGNuHO7G8gIhAI1hyHuyd9Z/
+          NY3oSRYBi9rklXm2wRTu1Vrz5wsogw8A
+          -----END CERTIFICATE-----
+          
+    httpOptions:
+      verify: false

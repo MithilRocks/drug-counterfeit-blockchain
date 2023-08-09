@@ -1,0 +1,92 @@
+---
+name: test-network-transporter
+version: 1.0.0
+client:
+  organization: transporter
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  transporter:
+    mspid: transporterMSP
+    peers:
+    - peer0.transporter.drugcounterfeit.com
+    - peer1.transporter.drugcounterfeit.com
+    certificateAuthorities:
+    - ca.transporter.drugcounterfeit.com
+peers:
+  peer0.transporter.drugcounterfeit.com:
+    url: grpcs://localhost:15051
+    tlsCACerts:
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIIClTCCAjugAwIBAgIQXlxGjBBXK5s/hT5IH/rclzAKBggqhkjOPQQDAjCBlDEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xKDAmBgNVBAoTH3RyYW5zcG9ydGVyLmRydWdjb3VudGVyZmVpdC5j
+          b20xLjAsBgNVBAMTJXRsc2NhLnRyYW5zcG9ydGVyLmRydWdjb3VudGVyZmVpdC5j
+          b20wHhcNMjMwODA2MDk1MTAwWhcNMzMwODAzMDk1MTAwWjCBlDELMAkGA1UEBhMC
+          VVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28x
+          KDAmBgNVBAoTH3RyYW5zcG9ydGVyLmRydWdjb3VudGVyZmVpdC5jb20xLjAsBgNV
+          BAMTJXRsc2NhLnRyYW5zcG9ydGVyLmRydWdjb3VudGVyZmVpdC5jb20wWTATBgcq
+          hkjOPQIBBggqhkjOPQMBBwNCAARZO4KQ4ByWLunk0zUbKtxBig/hjB14ZaTCdVEa
+          7i8A3/dW9ipBJsEHQeWEIki8Ih1d4/8kTopIwVWvzGIuW16Eo20wazAOBgNVHQ8B
+          Af8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB
+          /wQFMAMBAf8wKQYDVR0OBCIEIDDjCsycofnugxWTg1KVVhQF9FhLT/whYoRBSzLi
+          Z2bCMAoGCCqGSM49BAMCA0gAMEUCIHkgOSaIUFxHUEfNhQAeJtIUf/dDO0Ak+U5s
+          9Ss6aOWGAiEArs9zykfSCi31cg7FDaHuif4k65b7EBG8DcIT30q5+FQ=
+          -----END CERTIFICATE-----
+          
+    grpcOptions:
+      ssl-target-name-override: peer0.transporter.drugcounterfeit.com
+      hostnameOverride: peer0.transporter.drugcounterfeit.com
+  peer1.transporter.drugcounterfeit.com:
+    url: grpcs://localhost:16051
+    tlsCACerts:
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIIClTCCAjugAwIBAgIQXlxGjBBXK5s/hT5IH/rclzAKBggqhkjOPQQDAjCBlDEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xKDAmBgNVBAoTH3RyYW5zcG9ydGVyLmRydWdjb3VudGVyZmVpdC5j
+          b20xLjAsBgNVBAMTJXRsc2NhLnRyYW5zcG9ydGVyLmRydWdjb3VudGVyZmVpdC5j
+          b20wHhcNMjMwODA2MDk1MTAwWhcNMzMwODAzMDk1MTAwWjCBlDELMAkGA1UEBhMC
+          VVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBGcmFuY2lzY28x
+          KDAmBgNVBAoTH3RyYW5zcG9ydGVyLmRydWdjb3VudGVyZmVpdC5jb20xLjAsBgNV
+          BAMTJXRsc2NhLnRyYW5zcG9ydGVyLmRydWdjb3VudGVyZmVpdC5jb20wWTATBgcq
+          hkjOPQIBBggqhkjOPQMBBwNCAARZO4KQ4ByWLunk0zUbKtxBig/hjB14ZaTCdVEa
+          7i8A3/dW9ipBJsEHQeWEIki8Ih1d4/8kTopIwVWvzGIuW16Eo20wazAOBgNVHQ8B
+          Af8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB
+          /wQFMAMBAf8wKQYDVR0OBCIEIDDjCsycofnugxWTg1KVVhQF9FhLT/whYoRBSzLi
+          Z2bCMAoGCCqGSM49BAMCA0gAMEUCIHkgOSaIUFxHUEfNhQAeJtIUf/dDO0Ak+U5s
+          9Ss6aOWGAiEArs9zykfSCi31cg7FDaHuif4k65b7EBG8DcIT30q5+FQ=
+          -----END CERTIFICATE-----
+          
+    grpcOptions:
+      ssl-target-name-override: peer1.transporter.drugcounterfeit.com
+      hostnameOverride: peer1.transporter.drugcounterfeit.com
+certificateAuthorities:
+  ca.transporter.drugcounterfeit.com:
+    url: https://localhost:11054
+    caName: ca_transporter
+    tlsCACerts:
+      pem: 
+        - |
+          -----BEGIN CERTIFICATE-----
+          MIICkTCCAjagAwIBAgIRAPI8B3JwwuPMkaQEF34VkBkwCgYIKoZIzj0EAwIwgZEx
+          CzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g
+          RnJhbmNpc2NvMSgwJgYDVQQKEx90cmFuc3BvcnRlci5kcnVnY291bnRlcmZlaXQu
+          Y29tMSswKQYDVQQDEyJjYS50cmFuc3BvcnRlci5kcnVnY291bnRlcmZlaXQuY29t
+          MB4XDTIzMDgwNjA5NTEwMFoXDTMzMDgwMzA5NTEwMFowgZExCzAJBgNVBAYTAlVT
+          MRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMSgw
+          JgYDVQQKEx90cmFuc3BvcnRlci5kcnVnY291bnRlcmZlaXQuY29tMSswKQYDVQQD
+          EyJjYS50cmFuc3BvcnRlci5kcnVnY291bnRlcmZlaXQuY29tMFkwEwYHKoZIzj0C
+          AQYIKoZIzj0DAQcDQgAEWgmHI1LrUjRQoBrfxmcadBBwsNi7xbZxusHsRQk1yMIX
+          7NhPYwHnoPn1EP/kY25eR6Dsrlo/sR2XTuOTwPzFjqNtMGswDgYDVR0PAQH/BAQD
+          AgGmMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTAD
+          AQH/MCkGA1UdDgQiBCBAi0RA04jkp8JZTYBFUlK8uTZ7GGbZWg0Ne4PeYHaBEzAK
+          BggqhkjOPQQDAgNJADBGAiEAuFejz3cPhb0gYanaGdtvklAQ1iMPLWmaH//H2g5N
+          GFICIQCZgxrY6BHPaj1dp/l0/zCFNwSAqK63YODj6BlvPHxy1Q==
+          -----END CERTIFICATE-----
+          
+    httpOptions:
+      verify: false

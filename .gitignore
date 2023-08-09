@@ -1,7 +1,6 @@
 network/organizations/ordererOrganizations/
 network/organizations/peerOrganizations/
 fabric-samples
-network/system-genesis-block
 network/channel-artifacts
 test-network
 chaincode/node_modules
